@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test APIs</title>
+        <style>
+        #userTable {
+            border-collapse: collapse;
+        }
+
+        #userTable th, #userTable td {
+            padding: 8px;
+            border: 1px solid black;
+        }
+    </style>
+    <!-- Add any necessary CSS styles or external libraries -->
+</head>
+<body>
+    <h1>Test APIs</h1>
+
+    <h2>Create Customer</h2>
+    <form id="createCustomerForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile"><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+
+        <button type="submit">Create Customer</button>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" name="loginUsername"><br>
+
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="loginPassword"><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Get All Users</h2>
+    <button id="getAllUsersButton">Get All Users</button>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Mobile</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+        </tbody>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Create Customer Form
+            $("#createCustomerForm").submit(function(e) {
+                e.preventDefault();
+
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var mobile = $("#mobile").val();
+                var name = $("#name").val();
+                var address = $("#address").val();
+                var email = $("#email").val();
+
+                var data = {
+                    "username": username,
+                    "password": password,
+                    "mobile": mobile,
+                    "name": name,
+                    "address": address,
+                    "email": email
+                };
+
+                $.ajax({
+                    url: "/api/customers/create",
+                    type: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: function(response) {
+                        if (response.error) {
+                            alert("Error creating customer: " + response.error);
+                            return;
+                        }
+                        else{
+                            alert("Customer created successfully");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error creating customer: " + xhr.responseText);
+                    }
+                });
+            });
+
+            // Login Form
+            $("#loginForm").submit(function(e) {
+                e.preventDefault();
+
+                var username = $("#loginUsername").val();
+                var password = $("#loginPassword").val();
+
+                var data = {
+                    "username": username,
+                    "password": password
+                };
+
+                $.ajax({
+                    url: "/api/customers/login",
+                    type: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: function(response) {
+                        alert("Login successful");
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error logging in: " + xhr.responseText);
+                    }
+                });
+            });
+
+            // Get All Users Button
+                $("#getAllUsersButton").click(function() {
+                $.ajax({
+                    url: "/api/customers/select_all",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        var users = response.customers;
+                        console.log(JSON.stringify(response));
+                        var tableBody = $("#userTableBody");
+                        tableBody.empty();
+
+                        $.each(users, function(index, user) {
+                            var row = $("<tr>");
+                            row.append($("<td>").text(user.username));
+                            row.append($("<td>").text(user.name));
+                            row.append($("<td>").text(user.email));
+                            row.append($("<td>").text(user.address));
+                            row.append($("<td>").text(user.mobile));
+
+                            tableBody.append(row);
+                        });
+
+                        alert("Successfully retrieved all users. JSON in console.");
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error getting all users: " + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

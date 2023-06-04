@@ -1,0 +1,29 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+
+# Dependency directories
+venv/
+env/
+env36/
+.env
+
+# Editor/IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# System/OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration
+settings_local.py
