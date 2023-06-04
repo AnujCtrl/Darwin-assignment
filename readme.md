@@ -3,6 +3,9 @@
 
 The Customer Management System is a Django-based web application that allows you to create and manage customer records. It provides functionality to create new customers, update existing customer details, and perform user authentication for login.
 
+![image](https://github.com/AnujCtrl/Darwin-assignment/assets/63535089/48cfce2c-c32f-42e3-b99e-bb017491e76f)
+
+
 ## Features
 
 - User Registration: Create new customer accounts with a unique username, password, email, mobile number, name, and address.
